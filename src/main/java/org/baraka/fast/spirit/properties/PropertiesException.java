@@ -1,4 +1,4 @@
-package org.baraka.fast.spirit.application;
+package org.baraka.fast.spirit.properties;
 
 import java.util.Properties;
 

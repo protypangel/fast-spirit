@@ -1,23 +1,21 @@
-package org.baraka.fast.spirit.application;
+package org.baraka.fast.spirit.properties;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
-public class FastSpiritArgumentTransform {
-    protected String resourcePath;
-    protected Properties properties;
-    public FastSpiritArgumentTransform(String []args) throws PropertiesException {
+public class PropertiesArguments {
+    private Properties properties;
+    public PropertiesArguments(String []args) throws PropertiesException {
         Map<String, String> arguments = Arrays.stream(args).collect(Collectors.toMap(arg -> arg.split("=")[0], arg -> arg.split("=")[1]));
         basicArgument(arguments);
         arguments.put("properties", arguments.get("properties").replaceAll("\\\\", "/"));
-        resourcePath = findResourcePath(new File(System.getProperty("user.dir")), arguments.get("properties"));
-        this.setProperties();
+        String resourcePath = findResourcePath(new File(System.getProperty("user.dir")), arguments.get("properties"));
+        this.setProperties(resourcePath);
     }
     private void basicArgument(Map<String, String> arguments) {
         if (!arguments.containsKey("properties")) arguments.put("properties", "resources/application.properties");
@@ -38,7 +36,7 @@ public class FastSpiritArgumentTransform {
         }
         return null;
     }
-    private void setProperties() throws PropertiesException {
+    private void setProperties(String resourcePath) throws PropertiesException {
         this.properties = new Properties();
         try {
             properties.load(new FileInputStream(resourcePath));
@@ -46,5 +44,8 @@ public class FastSpiritArgumentTransform {
         } catch (IOException e) {
             throw new PropertiesException(resourcePath);
         }
+    }
+    public String getProperty(String key) {
+        return (String) this.properties.get(key);
     }
 }
