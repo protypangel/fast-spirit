@@ -9,14 +9,5 @@ public class JsonConvertor {
     static {
         ExclusionStrategy strategy = new CustomExclusionStrategy();
         gson = new GsonBuilder();
-//                .registerTypeAdapter(NormalClass.class, new ObjectSerializer())
-                .addSerializationExclusionStrategy(strategy)
-                .create();
-    }
-    public static String toJson(Object object) {
-        return gson.toJson(object);
-    }
-    public static <T> T fromJson(String json, Class c) {
-        return (T) gson.fromJson(json, c);
     }
 }
