@@ -5,8 +5,15 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public enum DefaultProperties {
-    PortController("80"),
-    PortStream("81");
+    COMMUNICATION_PORT("80"),
+    COMMUNICATION_API_DOC_URL("/api"),
+    COMMUNICATION_API_DOC_ACCESS_ROLES("ADMIN|DEV"),
+    COMMUNICATION_API_DOC_ACCESS_IP("*"),
+    COMMUNICATION_API_DOC_TITLE("Fast Spirit"),
+    COMMUNICATION_API_DOC_VERSION("ALPHA TEST"),
+
+    REPOSITORY_CONNECTION_METHOD("UPDATE"),
+    REPOSITORY_DRIVER("org.postgresql.Driver");
 
     private String value;
     DefaultProperties(String value) {
@@ -16,12 +23,10 @@ public enum DefaultProperties {
         return value;
     }
     private static String key (DefaultProperties props) {
-        char[] chars = props.name().toCharArray();
-        char init = (char) (chars[0] + 32);
-        StringBuilder builder = new StringBuilder().append(init);
-        for (int i = 1; i < chars.length; i++) {
-            char c = chars[i];
-            if ('A' <= c && c <= 'Z') builder.append(".").append((char) (c + 32));
+        StringBuilder builder = new StringBuilder();
+        for (char c : props.name().toCharArray()) {
+            if ('_' == c) builder.append(".");
+            else if ('A' <= c && c <= 'Z') builder.append((char) (c + 32));
             else builder.append(c);
         }
         return builder.toString();

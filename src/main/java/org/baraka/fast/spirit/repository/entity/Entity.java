@@ -10,7 +10,8 @@ import java.lang.annotation.Target;
 public @interface Entity {
     // Table name
     String value() default "";
-    String ID_NAME() default "id";
-    GenerationId GenerationId() default GenerationId.AUTO_INCREMENT;
+    String id() default "";
+    GenerationId GenerationId() default GenerationId.AUTO_INCREMENT; // Custom si id n'est pas vide
+    // TODO: A prendre en compte
     String BDD_NAME() default "";
 }
